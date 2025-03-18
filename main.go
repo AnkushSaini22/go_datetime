@@ -2,11 +2,18 @@ package main
 
 import (
 	"fmt"
+	"net/http"
 	"time"
 )
 
-func main() {
-	
-	currentTime := time.Now()
-	fmt.Println("Current Date & Time:", currentTime.Format("2006-01-02 15:04:05"))
+func handler(w http.ResponseWriter, r *http.Request) {
+	currentTime := time.Now().Format("2006-01-02 15:04:05")
+	fmt.Fprintf(w, "<h1>Current Date & Time: %s</h1>", currentTime)
 }
+
+func main() {
+	http.HandleFunc("/", handler)
+	fmt.Println("Server running on port 8080...")
+	http.ListenAndServe(":8080", nil)
+}
+
